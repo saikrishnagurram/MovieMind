@@ -10,6 +10,7 @@ export interface Media {
   overview: string;
   poster_path: string | null;
   vote_average: number;
+  vote_count: number;
   release_date?: string; // Movies
   first_air_date?: string; // TV
   media_type: 'movie' | 'tv';
@@ -27,6 +28,8 @@ export interface NormalizedMedia {
   overview: string;
   posterUrl: string | null;
   rating: number;
+  voteCount: number;
+  rottenTomatoes?: number;
   year: string;
   type: 'movie' | 'tv';
   watchProviders?: WatchProvider[];

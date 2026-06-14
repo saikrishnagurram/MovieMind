@@ -39,21 +39,44 @@
   padding: 1rem;
 }
 
-.rating-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #e67e22;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+.ratings-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.rating-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-weight: 700;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.rating-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rating-value {
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.rating-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.rating-item.imdb .rating-value {
+  color: #f5c518; /* IMDb Yellow */
+}
+
+.rating-item.rt .rating-value {
+  color: #fa320a; /* Rotten Tomatoes Red */
 }
 
 .info-container {
@@ -174,6 +197,11 @@
   .media-title {
     font-size: 1.8rem;
     margin-bottom: 0.8rem;
+  }
+
+  .ratings-container {
+    gap: 1rem;
+    margin-bottom: 1.2rem;
   }
 
   .media-overview {

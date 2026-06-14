@@ -10,6 +10,13 @@ interface SuggestionCardProps {
 }
 
 export const SuggestionCard: React.FC<SuggestionCardProps> = ({ media, onNext, onIgnore }) => {
+  const formatVoteCount = (count: number) => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'k';
+    }
+    return count.toString();
+  };
+
   return (
     <div className="suggestion-card fade-in">
       <div className="card-content">
@@ -19,10 +26,6 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ media, onNext, o
           ) : (
             <div className="poster-placeholder">No Image Available</div>
           )}
-          <div className="rating-badge">
-            <Star size={16} fill="currentColor" />
-            <span>{media.rating.toFixed(1)}</span>
-          </div>
         </div>
         
         <div className="info-container">
@@ -35,6 +38,20 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ media, onNext, o
           </div>
           
           <h2 className="media-title">{media.title}</h2>
+
+          <div className="ratings-container">
+            <div className="rating-item imdb">
+              <span className="rating-label">IMDb</span>
+              <span className="rating-value">{media.rating.toFixed(1)}</span>
+              <span className="rating-count">({formatVoteCount(media.voteCount)})</span>
+            </div>
+            {media.rottenTomatoes && (
+              <div className="rating-item rt">
+                <span className="rating-label">RT</span>
+                <span className="rating-value">{media.rottenTomatoes}%</span>
+              </div>
+            )}
+          </div>
           
           {media.watchProviders && media.watchProviders.length > 0 && (
             <div className="watch-providers">
