@@ -86,7 +86,27 @@
 }
 
 @media (max-width: 600px) {
+  .genre-selector {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
   .selector-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .selector-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .genre-chip {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .start-button {
+    width: 100%;
+    padding: 1rem;
   }
 }

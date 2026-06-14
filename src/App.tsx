@@ -229,12 +229,23 @@ function App() {
         }
         
         @media (max-width: 768px) {
+          .app-header {
+            padding: 1rem;
+          }
           .header-content {
             flex-direction: column;
             gap: 1rem;
+            align-items: stretch;
+          }
+          .logo {
+            justify-content: center;
           }
           .search-bar {
+            max-width: none;
             width: 100%;
+          }
+          .header-actions {
+            display: none; /* Hide settings on small mobile to save space */
           }
         }
       `}</style>
