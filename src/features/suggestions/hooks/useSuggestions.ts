@@ -1,0 +1,102 @@
+import { useState, useCallback, useEffect } from 'react';
+import type { NormalizedMedia } from '../types';
+import { discoverMedia, searchMedia } from '../../../services/tmdbApi';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
+
+export function useSuggestions(genreIds: number[]) {
+  const [suggestions, setSuggestions] = useState<NormalizedMedia[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+
+  const [ignoredIds, setIgnoredIds] = useLocalStorage<number[]>('ignored_media_ids', []);
+  const [seenIds, setSeenIds] = useLocalStorage<number[]>('seen_media_ids', []);
+
+  const fetchMore = useCallback(async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const results = await discoverMedia(genreIds, page);
+      
+      // Filter out ignored and seen
+      const filtered = results.filter(
+        item => !ignoredIds.includes(item.id) && !seenIds.includes(item.id)
+      );
+
+      setSuggestions(prev => [...prev, ...filtered]);
+      setPage(prev => prev + 1);
+      setError(null);
+    } catch (err) {
+      setError('Failed to fetch suggestions. Please check your API key.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [genreIds, page, loading, ignoredIds, seenIds]);
+
+  useEffect(() => {
+    if (genreIds.length > 0 && suggestions.length === 0) {
+      fetchMore();
+    }
+  }, [genreIds, suggestions.length, fetchMore]);
+
+  const currentSuggestion = suggestions[currentIndex] || null;
+
+  const nextSuggestion = () => {
+    if (currentSuggestion) {
+      setSeenIds(prev => [...prev, currentSuggestion.id]);
+    }
+    
+    if (currentIndex + 1 >= suggestions.length) {
+      fetchMore();
+    }
+    setCurrentIndex(prev => prev + 1);
+  };
+
+  const ignoreSuggestion = () => {
+    if (currentSuggestion) {
+      setIgnoredIds(prev => [...prev, currentSuggestion.id]);
+      // Also remove from current list to be sure
+      setSuggestions(prev => prev.filter(item => item.id !== currentSuggestion.id));
+      // Don't increment index because the list shifted or we just need the next one
+    }
+  };
+
+  const resetSuggestions = () => {
+    setSuggestions([]);
+    setCurrentIndex(0);
+    setPage(1);
+  };
+
+  const removeIgnored = (id: number) => {
+    setIgnoredIds(prev => prev.filter(ignoredId => ignoredId !== id));
+  };
+
+  const handleSearch = async (query: string) => {
+    if (!query) return;
+    setLoading(true);
+    try {
+      const results = await searchMedia(query);
+      setSuggestions(results);
+      setCurrentIndex(0);
+      setError(null);
+    } catch (err) {
+      setError('Search failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    currentSuggestion,
+    loading,
+    error,
+    nextSuggestion,
+    ignoreSuggestion,
+    resetSuggestions,
+    ignoredIds,
+    removeIgnored,
+    handleSearch
+  };
+}

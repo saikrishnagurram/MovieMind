@@ -1,0 +1,245 @@
+import { useState } from 'react';
+import { GenreSelector } from './features/suggestions/components/GenreSelector';
+import { SuggestionCard } from './features/suggestions/components/SuggestionCard';
+import { useSuggestions } from './features/suggestions/hooks/useSuggestions';
+import { Loader2, Settings, RefreshCcw, Film, Search } from 'lucide-react';
+import './styles/index.css';
+
+function App() {
+  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const {
+    currentSuggestion,
+    loading,
+    error,
+    nextSuggestion,
+    ignoreSuggestion,
+    resetSuggestions,
+    ignoredIds,
+    removeIgnored,
+    handleSearch
+  } = useSuggestions(selectedGenres);
+
+  const handleGenresSelected = (ids: number[]) => {
+    setSelectedGenres(ids);
+  };
+
+  const handleReset = () => {
+    setSelectedGenres([]);
+    setSearchQuery('');
+    resetSuggestions();
+  };
+
+  const onSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      handleSearch(searchQuery);
+      if (selectedGenres.length === 0) {
+        setSelectedGenres([-1]); // Dummy to switch view
+      }
+    }
+  };
+
+  return (
+    <div className="container">
+      <header className="app-header">
+        <div className="header-content">
+          <div className="logo" onClick={handleReset} style={{ cursor: 'pointer' }}>
+            <Film className="logo-icon" size={32} />
+            <span>MovieMind</span>
+          </div>
+          
+          <form className="search-bar" onSubmit={onSearchSubmit}>
+            <input 
+              type="text" 
+              placeholder="Search for a movie or TV show..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="search-btn">
+              <Search size={20} />
+            </button>
+          </form>
+
+          <div className="header-actions">
+            <button 
+              className="btn-icon" 
+              onClick={() => setShowSettings(!showSettings)}
+              title="Manage Ignored Items"
+            >
+              <Settings size={24} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        {showSettings ? (
+          <div className="settings-view fade-in">
+            <h2>Ignored Suggestions ({ignoredIds.length})</h2>
+            <p>You can remove items from this list to see them again.</p>
+            {ignoredIds.length === 0 ? (
+              <p className="empty-state">No ignored items yet.</p>
+            ) : (
+              <div className="ignored-list">
+                {ignoredIds.map(id => (
+                  <div key={id} className="ignored-item">
+                    <span>Media ID: {id}</span>
+                    <button className="btn-outline" onClick={() => removeIgnored(id)}>Remove</button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <button className="btn-primary" onClick={() => setShowSettings(false)}>Close</button>
+          </div>
+        ) : selectedGenres.length === 0 ? (
+          <GenreSelector onGenresSelected={handleGenresSelected} />
+        ) : (
+          <div className="suggestion-view">
+            {loading && !currentSuggestion ? (
+              <div className="loading-state">
+                <Loader2 className="spinner" size={48} />
+                <p>Finding the perfect suggestion...</p>
+              </div>
+            ) : error ? (
+              <div className="error-state">
+                <p>{error}</p>
+                <button className="btn-primary" onClick={handleReset}>Try Again</button>
+              </div>
+            ) : currentSuggestion ? (
+              <>
+                <SuggestionCard 
+                  media={currentSuggestion} 
+                  onNext={nextSuggestion} 
+                  onIgnore={ignoreSuggestion} 
+                />
+                <div className="view-footer">
+                  <button className="btn-secondary flex-center" onClick={handleReset}>
+                    <RefreshCcw size={18} />
+                    <span>Change Genres / Clear Search</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="empty-state">
+                <p>No results found!</p>
+                <button className="btn-primary" onClick={handleReset}>Back to Genres</button>
+              </div>
+            )}
+          </div>
+        )}
+      </main>
+
+      <style>{`
+        .app-header {
+          background-color: white;
+          border-bottom: 1px solid #dddfe2;
+          padding: 1rem 2rem;
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .header-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 2rem;
+        }
+        
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: var(--primary);
+          flex-shrink: 0;
+        }
+        
+        .search-bar {
+          flex: 1;
+          max-width: 600px;
+          display: flex;
+          background: #f0f2f5;
+          border-radius: 20px;
+          padding: 0.2rem 0.5rem;
+          border: 1px solid #dddfe2;
+        }
+        
+        .search-bar input {
+          flex: 1;
+          background: none;
+          border: none;
+          padding: 0.6rem 1rem;
+          font-size: 1rem;
+          outline: none;
+          color: var(--text-main);
+        }
+        
+        .search-btn {
+          background: none;
+          color: var(--text-muted);
+          padding: 0.5rem;
+        }
+        
+        .search-btn:hover {
+          color: var(--primary);
+        }
+        
+        .btn-icon {
+          background: none;
+          color: var(--text-muted);
+          padding: 0.5rem;
+        }
+        
+        .btn-icon:hover {
+          color: var(--primary);
+        }
+        
+        .view-footer {
+          display: flex;
+          justify-content: center;
+          margin-top: 2rem;
+          padding-bottom: 3rem;
+        }
+        
+        .settings-view {
+          background-color: white;
+          padding: 2.5rem;
+          border-radius: 12px;
+          max-width: 600px;
+          margin: 2rem auto;
+          box-shadow: var(--shadow);
+        }
+        
+        .ignored-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+          background-color: #f0f2f5;
+          margin-bottom: 0.5rem;
+          border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+          .header-content {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .search-bar {
+            width: 100%;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+export default App;
