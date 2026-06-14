@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Calendar, XCircle, ChevronRight } from 'lucide-react';
+import { Calendar, XCircle, ChevronRight } from 'lucide-react';
 import type { NormalizedMedia } from '../types';
 import './SuggestionCard.css';
 
