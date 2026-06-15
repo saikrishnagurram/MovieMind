@@ -1,5 +1,5 @@
 .genre-selector {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 40px auto;
   text-align: left;
   background: white;
@@ -9,7 +9,7 @@
 }
 
 .selector-title {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 40px;
   color: #1d1d1f;

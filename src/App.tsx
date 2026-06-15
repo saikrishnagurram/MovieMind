@@ -212,31 +212,31 @@ function App() {
 
         .header-content {
           width: 100%;
-          max-width: 1024px;
+          max-width: 1400px;
           margin: 0 auto;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 22px;
+          padding: 0 24px;
         }
 
         .logo {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-size: 1.2rem;
+          gap: 10px;
+          font-size: 1.3rem;
           font-weight: 600;
           letter-spacing: -0.02em;
         }
 
         .search-bar {
           background: rgba(0,0,0,0.05);
-          border-radius: 8px;
-          padding: 4px 12px;
+          border-radius: 10px;
+          padding: 6px 16px;
           display: flex;
           align-items: center;
-          gap: 8px;
-          width: 400px;
+          gap: 10px;
+          width: 500px;
           transition: all 0.3s ease;
         }
 
@@ -255,12 +255,12 @@ function App() {
         }
 
         .main-layout {
-          max-width: 1024px;
+          max-width: 1400px;
           margin: 0 auto;
           display: grid;
-          grid-template-columns: 1fr 280px;
+          grid-template-columns: 1fr 320px;
           gap: 40px;
-          padding: 40px 22px;
+          padding: 40px 24px;
         }
 
         .sidebar {
@@ -272,26 +272,26 @@ function App() {
         .sidebar-header {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 10px;
           margin-bottom: 24px;
           font-weight: 600;
-          font-size: 1.1rem;
+          font-size: 1.2rem;
         }
 
         .trending-item {
           display: flex;
-          gap: 14px;
-          margin-bottom: 20px;
-          padding: 8px;
-          border-radius: 12px;
+          gap: 16px;
+          margin-bottom: 24px;
+          padding: 10px;
+          border-radius: 14px;
           transition: all 0.2s ease;
           cursor: pointer;
         }
 
         .trending-item:hover {
           background: white;
-          transform: scale(1.02);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+          transform: scale(1.03);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         }
 
         .trending-poster-wrapper {
@@ -300,9 +300,9 @@ function App() {
         }
 
         .trending-item img {
-          width: 60px;
-          height: 90px;
-          border-radius: 8px;
+          width: 70px;
+          height: 105px;
+          border-radius: 10px;
           object-fit: cover;
         }
 
@@ -376,32 +376,32 @@ function App() {
 
         @media (max-width: 800px) {
           .header-content {
-            padding: 0 15px;
-            gap: 10px;
+            padding: 0 12px;
+            gap: 8px;
           }
           .search-bar {
             width: 100%;
-            padding: 2px 8px;
+            padding: 4px 10px;
           }
           .logo span {
             display: none; /* Show only icon on small mobile to save space */
           }
           .main-layout {
             grid-template-columns: 1fr;
-            padding: 20px 15px;
-            gap: 30px;
+            padding: 15px 10px;
+            gap: 25px;
           }
           .sidebar {
             position: static;
             display: block;
-            margin-top: 40px;
-            padding-top: 40px;
+            margin-top: 30px;
+            padding-top: 30px;
             border-top: 1px solid rgba(0,0,0,0.1);
           }
           .trending-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
           }
           .trending-item {
             flex-direction: column;
