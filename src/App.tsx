@@ -212,31 +212,31 @@ function App() {
 
         .header-content {
           width: 100%;
-          max-width: 1400px;
-          margin: 0 auto;
+          max-width: none; /* Full width */
+          margin: 0;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 24px;
+          padding: 0 40px;
         }
 
         .logo {
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-size: 1.3rem;
+          gap: 8px;
+          font-size: 1.2rem;
           font-weight: 600;
           letter-spacing: -0.02em;
         }
 
         .search-bar {
           background: rgba(0,0,0,0.05);
-          border-radius: 10px;
-          padding: 6px 16px;
+          border-radius: 8px;
+          padding: 4px 12px;
           display: flex;
           align-items: center;
           gap: 10px;
-          width: 500px;
+          width: 600px; /* Wider search bar */
           transition: all 0.3s ease;
         }
 
@@ -248,19 +248,19 @@ function App() {
         .search-bar input {
           background: transparent;
           border: none;
-          padding: 6px 0;
+          padding: 4px 0;
           width: 100%;
           outline: none;
           font-size: 0.9rem;
         }
 
         .main-layout {
-          max-width: 1400px;
-          margin: 0 auto;
+          max-width: none; /* Full width */
+          margin: 0;
           display: grid;
-          grid-template-columns: 1fr 320px;
-          gap: 40px;
-          padding: 40px 24px;
+          grid-template-columns: 1fr 380px; /* Wider sidebar */
+          gap: 60px; /* More space between content and sidebar */
+          padding: 40px;
         }
 
         .sidebar {
