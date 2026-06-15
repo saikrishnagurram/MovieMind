@@ -192,9 +192,30 @@
     flex-direction: column;
   }
   .poster-container {
-    flex: 0 0 400px;
+    flex: 0 0 300px;
+  }
+  .info-container {
+    padding: 24px;
   }
   .media-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+  .ratings-container {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .media-overview {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    -webkit-line-clamp: 3;
+  }
+  .card-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
   }
 }

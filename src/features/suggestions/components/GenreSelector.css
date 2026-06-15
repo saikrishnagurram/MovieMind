@@ -122,11 +122,22 @@
 
 @media (max-width: 600px) {
   .genre-selector {
-    padding: 30px;
-    margin: 20px;
+    padding: 24px;
+    margin: 10px;
     border-radius: 20px;
   }
   .selector-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+  }
+  .section-container {
+    margin-bottom: 32px;
+  }
+  .lang-chip, .genre-chip {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  .genres-grid, .language-selector {
+    gap: 8px;
   }
 }

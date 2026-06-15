@@ -375,11 +375,42 @@ function App() {
         }
 
         @media (max-width: 800px) {
+          .header-content {
+            padding: 0 15px;
+            gap: 10px;
+          }
+          .search-bar {
+            width: 100%;
+            padding: 2px 8px;
+          }
+          .logo span {
+            display: none; /* Show only icon on small mobile to save space */
+          }
           .main-layout {
             grid-template-columns: 1fr;
+            padding: 20px 15px;
+            gap: 30px;
           }
           .sidebar {
-            display: none;
+            position: static;
+            display: block;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+          }
+          .trending-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+          }
+          .trending-item {
+            flex-direction: column;
+            text-align: center;
+          }
+          .trending-item img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2/3;
           }
           .search-bar {
             width: 100%;
