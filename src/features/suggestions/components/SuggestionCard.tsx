@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, XCircle, ChevronRight } from 'lucide-react';
+import { Calendar, XCircle, ChevronRight, Award } from 'lucide-react';
 import type { NormalizedMedia } from '../types';
 import './SuggestionCard.css';
 
@@ -47,10 +47,15 @@ export const SuggestionCard: React.FC<SuggestionCardProps> = ({ media, onNext, o
             </div>
             {media.rottenTomatoes && (
               <div className="rating-item rt">
-                <span className="rating-label">RT</span>
+                <span className="rating-label">TomatoMeter</span>
                 <span className="rating-value">{media.rottenTomatoes}%</span>
               </div>
             )}
+            <div className="rating-item user-score">
+              <Award size={16} className="score-icon" />
+              <span className="rating-label">User Score</span>
+              <span className="rating-value">{Math.round(media.rating * 10)}%</span>
+            </div>
           </div>
           
           {media.watchProviders && media.watchProviders.length > 0 && (

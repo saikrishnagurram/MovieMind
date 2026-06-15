@@ -1,160 +1,132 @@
 .genre-selector {
-  max-width: 900px;
-  margin: 2rem auto;
-  text-align: center;
-  background: var(--bg-light);
-  padding: 3rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
+  max-width: 800px;
+  margin: 40px auto;
+  text-align: left;
+  background: white;
+  padding: 60px;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.05);
 }
 
 .selector-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  color: var(--text-main);
-}
-
-.selector-subtitle {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 2.5rem;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
 }
 
 .section-container {
-  margin-bottom: 3rem;
-  text-align: left;
+  margin-bottom: 48px;
 }
 
 .section-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1.2rem;
-  color: var(--text-main);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1d1d1f;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  border-bottom: 1px solid #dddfe2;
-  padding-bottom: 0.8rem;
+  gap: 10px;
+  border-bottom: 1px solid #d2d2d7;
+  padding-bottom: 12px;
 }
 
 .language-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 12px;
 }
 
 .lang-chip {
-  background-color: white;
-  border: 1px solid #dddfe2;
-  color: var(--text-main);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  background-color: #f5f5f7;
+  border: 1px solid transparent;
+  color: #1d1d1f;
+  padding: 10px 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: var(--transition);
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .lang-chip:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  background-color: #e8e8ed;
 }
 
 .lang-chip.selected {
-  background-color: rgba(0, 102, 204, 0.05);
-  border-color: var(--primary);
-  color: var(--primary);
+  background-color: #0071e3;
+  color: white;
 }
 
 .genres-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-bottom: 3rem;
+  gap: 10px;
 }
 
 .genre-chip {
-  background-color: #f0f2f5;
-  border: 1px solid #dddfe2;
-  color: var(--text-main);
-  padding: 0.7rem 1.4rem;
-  border-radius: 30px;
+  background-color: #f5f5f7;
+  border: 1px solid transparent;
+  color: #1d1d1f;
+  padding: 10px 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-size: 1rem;
   font-weight: 500;
-  transition: var(--transition);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .genre-chip:hover {
-  background-color: #e4e6eb;
-  border-color: #ccd0d5;
+  background-color: #e8e8ed;
 }
 
 .genre-chip.selected {
-  background-color: var(--primary);
-  border-color: var(--primary);
+  background-color: #0071e3;
   color: white;
 }
 
 .selector-footer {
-  position: sticky;
-  bottom: 2rem;
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .start-button {
-  padding: 1.2rem 3rem;
-  font-size: 1.2rem;
-  box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+  background-color: #0071e3;
+  color: white;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 980px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  gap: 1.5rem;
-  color: var(--text-muted);
+.start-button:disabled {
+  background-color: #d2d2d7;
+  cursor: not-allowed;
 }
 
-.spinner {
-  color: var(--primary);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.start-button:hover:not(:disabled) {
+  background-color: #0077ed;
+  transform: scale(1.02);
 }
 
 @media (max-width: 600px) {
   .genre-selector {
-    padding: 1.5rem;
-    margin: 1rem;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 20px;
   }
-
   .selector-title {
-    font-size: 1.8rem;
-  }
-
-  .selector-subtitle {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .genre-chip {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .start-button {
-    width: 100%;
-    padding: 1rem;
+    font-size: 2rem;
   }
 }

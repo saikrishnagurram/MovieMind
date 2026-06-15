@@ -78,6 +78,11 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     setPage(1);
   };
 
+  const selectMedia = (media: NormalizedMedia) => {
+    setSuggestions(prev => [media, ...prev]);
+    setCurrentIndex(0);
+  };
+
   const removeIgnored = (id: number) => {
     setIgnoredIds(prev => prev.filter(ignoredId => ignoredId !== id));
   };
@@ -114,6 +119,7 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     ignoredIds,
     removeIgnored,
     handleSearch,
-    handleRandom
+    handleRandom,
+    selectMedia
   };
 }
