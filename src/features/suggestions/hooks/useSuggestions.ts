@@ -17,15 +17,24 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     if (loading) return;
     setLoading(true);
     try {
+      console.log('Fetching media for:', { genreIds, page, languageCode });
       const results = await discoverMedia(genreIds, page, languageCode);
+      console.log('Raw results count:', results.length);
       
       // Filter out ignored and seen
       const filtered = results.filter(
         item => !ignoredIds.includes(item.id) && !seenIds.includes(item.id)
       );
+      console.log('Filtered results count:', filtered.length);
 
-      setSuggestions(prev => [...prev, ...filtered]);
-      setPage(prev => prev + 1);
+      if (filtered.length === 0 && results.length > 0 && page < 5) {
+        console.log('No new results on this page, trying next page...');
+        setPage(prev => prev + 1);
+        // The useEffect will trigger fetchMore again because suggestions.length is still 0
+      } else {
+        setSuggestions(prev => [...prev, ...filtered]);
+        setPage(prev => prev + 1);
+      }
       setError(null);
     } catch (err) {
       setError('Failed to fetch suggestions. Please check your API key.');

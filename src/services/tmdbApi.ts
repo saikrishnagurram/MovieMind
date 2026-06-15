@@ -46,35 +46,35 @@ export const discoverMedia = async (
   page: number = 1,
   languageCode: string = 'en'
 ): Promise<NormalizedMedia[]> => {
-  const fiveYearsAgo = new Date();
-  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-  const dateStr = fiveYearsAgo.toISOString().split('T')[0];
-
+  const isEnglish = languageCode === 'en';
+  
   const commonParams = {
     with_original_language: languageCode,
-    'vote_average.gte': 7,
-    'vote_count.gte': languageCode === 'en' ? 100 : 20, // Lower threshold for regional languages
+    'vote_average.gte': isEnglish ? 7 : 5, // Even lower threshold for regional
+    'vote_count.gte': isEnglish ? 100 : 5, // Very low threshold for regional
     with_genres: genreIds.join(','),
     page,
+    sort_by: 'popularity.desc' // Ensure we get results
   };
 
   const [movieRes, tvRes] = await Promise.all([
-    apiClient.get('/discover/movie', {
-      params: {
-        ...commonParams,
-        'primary_release_date.gte': dateStr,
-      },
-    }),
-    apiClient.get('/discover/tv', {
-      params: {
-        ...commonParams,
-        'first_air_date.gte': dateStr,
-      },
-    }),
+    apiClient.get('/discover/movie', { params: commonParams }),
+    apiClient.get('/discover/tv', { params: commonParams }),
   ]);
 
-  const rawMovies = movieRes.data.results;
-  const rawTvShows = tvRes.data.results;
+  let rawMovies = movieRes.data.results;
+  let rawTvShows = tvRes.data.results;
+
+  // If no results for regional, try without genre filter as a fallback
+  if (!isEnglish && rawMovies.length === 0 && rawTvShows.length === 0) {
+    const fallbackParams = { ...commonParams, with_genres: '' };
+    const [fMovieRes, fTvRes] = await Promise.all([
+      apiClient.get('/discover/movie', { params: fallbackParams }),
+      apiClient.get('/discover/tv', { params: fallbackParams }),
+    ]);
+    rawMovies = fMovieRes.data.results;
+    rawTvShows = fTvRes.data.results;
+  }
 
   const fetchProviders = async (id: number, type: 'movie' | 'tv') => {
     try {
