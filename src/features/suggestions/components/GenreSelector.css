@@ -3,51 +3,51 @@
   margin: 0;
   text-align: left;
   background: white;
-  padding: 60px;
-  border-radius: 30px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .selector-title {
-  font-size: 3rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   color: #1d1d1f;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .section-container {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .section-title {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   color: #1d1d1f;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   border-bottom: 1px solid #d2d2d7;
-  padding-bottom: 12px;
+  padding-bottom: 6px;
 }
 
 .language-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
 }
 
 .lang-chip {
   background-color: #f5f5f7;
   border: 1px solid transparent;
   color: #1d1d1f;
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
+  gap: 6px;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -65,19 +65,19 @@
 .genres-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .genre-chip {
   background-color: #f5f5f7;
   border: 1px solid transparent;
   color: #1d1d1f;
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1rem;
+  gap: 6px;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -93,7 +93,7 @@
 }
 
 .selector-footer {
-  margin-top: 40px;
+  margin-top: 24px;
   display: flex;
   justify-content: flex-start;
 }
@@ -101,8 +101,8 @@
 .start-button {
   background-color: #0071e3;
   color: white;
-  padding: 14px 32px;
-  font-size: 1.1rem;
+  padding: 10px 24px;
+  font-size: 0.9rem;
   font-weight: 600;
   border-radius: 980px;
   border: none;
@@ -122,22 +122,15 @@
 
 @media (max-width: 600px) {
   .genre-selector {
-    padding: 24px;
-    margin: 10px;
-    border-radius: 20px;
+    padding: 20px;
+    margin: 0;
+    border-radius: 0;
   }
   .selector-title {
-    font-size: 1.8rem;
-    margin-bottom: 24px;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
   }
   .section-container {
-    margin-bottom: 32px;
-  }
-  .lang-chip, .genre-chip {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-  .genres-grid, .language-selector {
-    gap: 8px;
+    margin-bottom: 20px;
   }
 }
