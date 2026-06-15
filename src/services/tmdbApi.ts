@@ -14,12 +14,12 @@ const apiClient = axios.create({
 
 export const fetchMovieGenres = async (): Promise<Genre[]> => {
   const response = await apiClient.get('/genre/movie/list');
-  return response.data.genres;
+  return response.data.genres.filter((g: Genre) => g.name !== 'News' && g.name !== 'Soap');
 };
 
 export const fetchTvGenres = async (): Promise<Genre[]> => {
   const response = await apiClient.get('/genre/tv/list');
-  return response.data.genres;
+  return response.data.genres.filter((g: Genre) => g.name !== 'News' && g.name !== 'Soap');
 };
 
 const normalizeMedia = (item: Media, type: 'movie' | 'tv', watchProviders: any[] = []): NormalizedMedia => {
@@ -43,16 +43,17 @@ const normalizeMedia = (item: Media, type: 'movie' | 'tv', watchProviders: any[]
 
 export const discoverMedia = async (
   genreIds: number[],
-  page: number = 1
+  page: number = 1,
+  languageCode: string = 'en'
 ): Promise<NormalizedMedia[]> => {
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
   const dateStr = fiveYearsAgo.toISOString().split('T')[0];
 
   const commonParams = {
-    with_original_language: 'en',
+    with_original_language: languageCode,
     'vote_average.gte': 7,
-    'vote_count.gte': 100,
+    'vote_count.gte': languageCode === 'en' ? 100 : 20, // Lower threshold for regional languages
     with_genres: genreIds.join(','),
     page,
   };

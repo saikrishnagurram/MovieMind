@@ -3,7 +3,13 @@ export interface Genre {
   name: string;
 }
 
+export interface Language {
+  code: string;
+  name: string;
+}
+
 export interface Media {
+...
   id: number;
   title?: string; // Movies have title
   name?: string; // TV shows have name

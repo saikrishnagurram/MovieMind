@@ -3,7 +3,7 @@ import type { NormalizedMedia } from '../types';
 import { discoverMedia, searchMedia } from '../../../services/tmdbApi';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
-export function useSuggestions(genreIds: number[]) {
+export function useSuggestions(genreIds: number[], languageCode: string = 'en') {
   const [suggestions, setSuggestions] = useState<NormalizedMedia[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -17,8 +17,8 @@ export function useSuggestions(genreIds: number[]) {
     if (loading) return;
     setLoading(true);
     try {
-      const results = await discoverMedia(genreIds, page);
-      
+      const results = await discoverMedia(genreIds, page, languageCode);
+...
       // Filter out ignored and seen
       const filtered = results.filter(
         item => !ignoredIds.includes(item.id) && !seenIds.includes(item.id)
@@ -39,7 +39,7 @@ export function useSuggestions(genreIds: number[]) {
     if (genreIds.length > 0 && suggestions.length === 0) {
       fetchMore();
     }
-  }, [genreIds, suggestions.length, fetchMore]);
+  }, [genreIds, suggestions.length, fetchMore, languageCode]);
 
   const currentSuggestion = suggestions[currentIndex] || null;
 

@@ -7,6 +7,7 @@ import './styles/index.css';
 
 function App() {
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [showSettings, setShowSettings] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -20,10 +21,11 @@ function App() {
     ignoredIds,
     removeIgnored,
     handleSearch
-  } = useSuggestions(selectedGenres);
+  } = useSuggestions(selectedGenres, selectedLanguage);
 
-  const handleGenresSelected = (ids: number[]) => {
-    setSelectedGenres(ids);
+  const handleSettingsSelected = (genreIds: number[], languageCode: string) => {
+    setSelectedGenres(genreIds);
+    setSelectedLanguage(languageCode);
   };
 
   const handleReset = () => {
@@ -95,7 +97,7 @@ function App() {
             <button className="btn-primary" onClick={() => setShowSettings(false)}>Close</button>
           </div>
         ) : selectedGenres.length === 0 ? (
-          <GenreSelector onGenresSelected={handleGenresSelected} />
+          <GenreSelector onSettingsSelected={handleSettingsSelected} />
         ) : (
           <div className="suggestion-view">
             {loading && !currentSuggestion ? (
