@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GenreSelector } from './features/suggestions/components/GenreSelector';
 import { SuggestionCard } from './features/suggestions/components/SuggestionCard';
 import { useSuggestions } from './features/suggestions/hooks/useSuggestions';
-import { Loader2, Settings, RefreshCcw, Film, Search } from 'lucide-react';
+import { Loader2, Settings, RefreshCcw, Film, Search, Dices, TrendingUp } from 'lucide-react';
+import { fetchTrending } from './services/tmdbApi';
+import type { NormalizedMedia } from './features/suggestions/types';
 import './styles/index.css';
 
 function App() {
@@ -10,6 +12,7 @@ function App() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [showSettings, setShowSettings] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [trending, setTrending] = useState<NormalizedMedia[]>([]);
   
   const {
     currentSuggestion,
@@ -20,8 +23,17 @@ function App() {
     resetSuggestions,
     ignoredIds,
     removeIgnored,
-    handleSearch
+    handleSearch,
+    handleRandom
   } = useSuggestions(selectedGenres, selectedLanguage);
+
+  useEffect(() => {
+    const loadTrending = async () => {
+      const data = await fetchTrending();
+      setTrending(data);
+    };
+    loadTrending();
+  }, []);
 
   const handleSettingsSelected = (genreIds: number[], languageCode: string) => {
     setSelectedGenres(genreIds);
@@ -77,66 +89,187 @@ function App() {
         </div>
       </header>
 
-      <main>
-        {showSettings ? (
-          <div className="settings-view fade-in">
-            <h2>Ignored Suggestions ({ignoredIds.length})</h2>
-            <p>You can remove items from this list to see them again.</p>
-            {ignoredIds.length === 0 ? (
-              <p className="empty-state">No ignored items yet.</p>
-            ) : (
-              <div className="ignored-list">
-                {ignoredIds.map(id => (
-                  <div key={id} className="ignored-item">
-                    <span>Media ID: {id}</span>
-                    <button className="btn-outline" onClick={() => removeIgnored(id)}>Remove</button>
-                  </div>
-                ))}
-              </div>
-            )}
-            <button className="btn-primary" onClick={() => setShowSettings(false)}>Close</button>
-          </div>
-        ) : selectedGenres.length === 0 ? (
-          <GenreSelector onSettingsSelected={handleSettingsSelected} />
-        ) : (
-          <div className="suggestion-view">
-            {loading && !currentSuggestion ? (
-              <div className="loading-state">
-                <Loader2 className="spinner" size={48} />
-                <p>Finding the perfect suggestion...</p>
-              </div>
-            ) : error ? (
-              <div className="error-state">
-                <p>{error}</p>
-                <button className="btn-primary" onClick={handleReset}>Try Again</button>
-              </div>
-            ) : currentSuggestion ? (
-              <>
-                <SuggestionCard 
-                  media={currentSuggestion} 
-                  onNext={nextSuggestion} 
-                  onIgnore={ignoreSuggestion} 
-                />
-                <div className="view-footer">
-                  <button className="btn-secondary flex-center" onClick={handleReset}>
-                    <RefreshCcw size={18} />
-                    <span>Change Genres / Clear Search</span>
-                  </button>
+      <main className="main-layout">
+        <div className="content-area">
+          {showSettings ? (
+            <div className="settings-view fade-in">
+              <h2>Ignored Suggestions ({ignoredIds.length})</h2>
+              <p>You can remove items from this list to see them again.</p>
+              {ignoredIds.length === 0 ? (
+                <p className="empty-state">No ignored items yet.</p>
+              ) : (
+                <div className="ignored-list">
+                  {ignoredIds.map(id => (
+                    <div key={id} className="ignored-item">
+                      <span>Media ID: {id}</span>
+                      <button className="btn-outline" onClick={() => removeIgnored(id)}>Remove</button>
+                    </div>
+                  ))}
                 </div>
-              </>
-            ) : (
-              <div className="empty-state">
-                <p>No results found!</p>
-                <button className="btn-primary" onClick={handleReset}>Back to Genres</button>
-              </div>
-            )}
+              )}
+              <button className="btn-primary" onClick={() => setShowSettings(false)}>Close</button>
+            </div>
+          ) : selectedGenres.length === 0 ? (
+            <GenreSelector onSettingsSelected={handleSettingsSelected} />
+          ) : (
+            <div className="suggestion-view">
+              {loading && !currentSuggestion ? (
+                <div className="loading-state">
+                  <Loader2 className="spinner" size={48} />
+                  <p>Finding the perfect suggestion...</p>
+                </div>
+              ) : error ? (
+                <div className="error-state">
+                  <p>{error}</p>
+                  <button className="btn-primary" onClick={handleReset}>Try Again</button>
+                </div>
+              ) : currentSuggestion ? (
+                <>
+                  <SuggestionCard 
+                    media={currentSuggestion} 
+                    onNext={nextSuggestion} 
+                    onIgnore={ignoreSuggestion} 
+                  />
+                  <div className="view-footer">
+                    <button className="btn-random flex-center" onClick={handleRandom}>
+                      <Dices size={18} />
+                      <span>Random Pick</span>
+                    </button>
+                    <button className="btn-reset flex-center" onClick={handleReset}>
+                      <RefreshCcw size={18} />
+                      <span>Change Genres / Clear</span>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="empty-state">
+                  <p>No results found!</p>
+                  <button className="btn-primary" onClick={handleReset}>Back to Genres</button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <aside className="sidebar">
+          <div className="sidebar-header">
+            <TrendingUp size={20} />
+            <h3>Popular This Week</h3>
           </div>
-        )}
+          <div className="trending-list">
+            {trending.map(movie => (
+              <div key={movie.id} className="trending-item">
+                <img src={movie.posterUrl || ''} alt={movie.title} />
+                <div className="trending-info">
+                  <span className="trending-title">{movie.title}</span>
+                  <span className="trending-meta">{movie.year} • {movie.rating.toFixed(1)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </aside>
       </main>
 
       <style>{`
+        .main-layout {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 300px;
+          gap: 2rem;
+          padding: 2rem;
+        }
+
+        .sidebar {
+          background: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          border: 1px solid #dddfe2;
+          height: fit-content;
+          position: sticky;
+          top: 100px;
+        }
+
+        .sidebar-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          color: var(--primary);
+        }
+
+        .trending-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+        }
+
+        .trending-item {
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+        }
+
+        .trending-item img {
+          width: 50px;
+          height: 75px;
+          object-fit: cover;
+          border-radius: 4px;
+        }
+
+        .trending-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .trending-title {
+          font-weight: 700;
+          font-size: 0.9rem;
+          color: var(--text-main);
+          line-height: 1.2;
+        }
+
+        .trending-meta {
+          font-size: 0.8rem;
+          color: var(--text-muted);
+        }
+
+        .btn-random {
+          background-color: #6c5ce7;
+          color: white;
+          padding: 0.8rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
+        }
+
+        .btn-reset {
+          background-color: #ff7675;
+          color: white;
+          padding: 0.8rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
+        }
+
+        .view-footer {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          margin-top: 2rem;
+          padding-bottom: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+          .main-layout {
+            grid-template-columns: 1fr;
+          }
+          .sidebar {
+            display: none;
+          }
+        }
+
         .app-header {
           background-color: white;
+...
           border-bottom: 1px solid #dddfe2;
           padding: 1rem 2rem;
           position: sticky;

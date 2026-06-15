@@ -82,6 +82,13 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     setIgnoredIds(prev => prev.filter(ignoredId => ignoredId !== id));
   };
 
+  const handleRandom = () => {
+    if (suggestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * suggestions.length);
+      setCurrentIndex(randomIndex);
+    }
+  };
+
   const handleSearch = async (query: string) => {
     if (!query) return;
     setLoading(true);
@@ -106,6 +113,7 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     resetSuggestions,
     ignoredIds,
     removeIgnored,
-    handleSearch
+    handleSearch,
+    handleRandom
   };
 }

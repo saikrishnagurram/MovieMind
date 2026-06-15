@@ -145,3 +145,8 @@ export const searchMedia = async (query: string): Promise<NormalizedMedia[]> => 
 
   return [...moviesWithProviders, ...tvWithProviders].sort((a, b) => b.rating - a.rating);
 };
+
+export const fetchTrending = async (): Promise<NormalizedMedia[]> => {
+  const response = await apiClient.get('/trending/movie/week');
+  return response.data.results.map((m: Media) => normalizeMedia(m, 'movie')).slice(0, 10);
+};
