@@ -18,7 +18,7 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     setLoading(true);
     try {
       const results = await discoverMedia(genreIds, page, languageCode);
-...
+      
       // Filter out ignored and seen
       const filtered = results.filter(
         item => !ignoredIds.includes(item.id) && !seenIds.includes(item.id)
@@ -33,7 +33,7 @@ export function useSuggestions(genreIds: number[], languageCode: string = 'en') 
     } finally {
       setLoading(false);
     }
-  }, [genreIds, page, loading, ignoredIds, seenIds]);
+  }, [genreIds, page, loading, ignoredIds, seenIds, languageCode]);
 
   useEffect(() => {
     if (genreIds.length > 0 && suggestions.length === 0) {
